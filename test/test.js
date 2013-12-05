@@ -41,10 +41,6 @@ describe('Webapp generator test', function () {
       'app/styles/main.scss'
     ];
 
-    helpers.mockPrompt(this.webapp, {
-      features: ['compassBootstrap']
-    });
-
     this.webapp.coffee = true;
     this.webapp.options['skip-install'] = true;
     this.webapp.run({}, function () {
@@ -66,10 +62,6 @@ describe('Webapp generator test', function () {
       'app/styles/main.scss'
     ];
 
-    helpers.mockPrompt(this.webapp, {
-      features: ['compassBootstrap']
-    });
-
     this.webapp.coffee = false;
     this.webapp.options['skip-install'] = true;
     this.webapp.run({}, function () {
@@ -83,17 +75,10 @@ describe('Webapp generator test', function () {
       ['bower.json', /"name": "temp"/],
       ['package.json', /"name": "temp"/],
       'Gruntfile.js',
-      'app/404.html',
       'app/favicon.ico',
       'app/robots.txt',
-      'app/index.html',
-      'app/scripts/main.js',
-      'app/styles/main.scss'
+      'app/scripts/main.js'
     ];
-
-    helpers.mockPrompt(this.webapp, {
-      features: ['compassBootstrap']
-    });
 
     this.webapp.options['skip-install'] = true;
     this.webapp.run({}, function () {

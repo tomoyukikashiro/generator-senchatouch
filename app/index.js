@@ -1,8 +1,9 @@
 'use strict';
 var util = require('util');
 var path = require('path');
-var spawn = require('child_process').spawn;
 var yeoman = require('yeoman-generator');
+var exec = require('child_process').exec;
+var q = require('q');
 
 
 var AppGenerator = module.exports = function Appgenerator(args, options, config) {
@@ -32,39 +33,30 @@ var AppGenerator = module.exports = function Appgenerator(args, options, config)
 
 util.inherits(AppGenerator, yeoman.generators.Base);
 
+AppGenerator.prototype.welcome = function welcome() {
+  // welcome message
+  console.log(this.yeoman);
+};
+
 AppGenerator.prototype.askFor = function askFor() {
   var cb = this.async();
 
-  // welcome message
-  if (!this.options['skip-welcome-message']) {
-    console.log(this.yeoman);
-    console.log('Out of the box I include HTML5 Boilerplate and jQuery.');
-  }
-
-  var prompts = [{
-    type: 'checkbox',
-    name: 'features',
-    message: 'What more would you like?',
-    choices: [{
-      name: 'Bootstrap for Sass',
-      value: 'compassBootstrap',
-      checked: true
-    }, {
-      name: 'Modernizr',
-      value: 'includeModernizr',
-      checked: true
-    }]
-  }];
+  var prompts = [
+    {
+      name: 'appname',
+      message: 'What is your app name?',
+      'default': 'app'
+    },
+    {
+      name: 'sdkPath',
+      message: 'Where is your sencha touch sdk? Please input path to sdk.'
+    }
+  ];
 
   this.prompt(prompts, function (answers) {
-    var features = answers.features;
 
-    function hasFeature(feat) { return features.indexOf(feat) !== -1; }
-
-    // manually deal with the response, get back and store the results.
-    // we change a bit this way of doing to automatically do this in the self.prompt() method.
-    this.compassBootstrap = hasFeature('compassBootstrap');
-    this.includeModernizr = hasFeature('includeModernizr');
+    this.appname = answers.appname;
+    this.sdkpath = answers.sdkpath;
 
     cb();
   }.bind(this));
@@ -98,66 +90,41 @@ AppGenerator.prototype.editorConfig = function editorConfig() {
 
 AppGenerator.prototype.h5bp = function h5bp() {
   this.copy('favicon.ico', 'app/favicon.ico');
-  this.copy('404.html', 'app/404.html');
   this.copy('robots.txt', 'app/robots.txt');
   this.copy('htaccess', 'app/.htaccess');
 };
 
-AppGenerator.prototype.mainStylesheet = function mainStylesheet() {
-  if (this.compassBootstrap) {
-    this.copy('main.scss', 'app/styles/main.scss');
-  } else {
-    this.copy('main.css', 'app/styles/main.css');
-  }
-};
-
 AppGenerator.prototype.writeIndex = function writeIndex() {
 
-  this.indexFile = this.readFileAsString(path.join(this.sourceRoot(), 'index.html'));
-  this.indexFile = this.engine(this.indexFile, this);
-  this.indexFile = this.appendScripts(this.indexFile, 'scripts/main.js', [
-    'scripts/main.js'
-  ]);
-
-  if (this.coffee) {
-    this.indexFile = this.appendFiles({
-      html: this.indexFile,
-      fileType: 'js',
-      optimizedPath: 'scripts/coffee.js',
-      sourceFileList: ['scripts/hello.js'],
-      searchPath: '.tmp'
-    });
-  }
-
-  if (this.compassBootstrap) {
-    // wire Twitter Bootstrap plugins
-    this.indexFile = this.appendScripts(this.indexFile, 'scripts/plugins.js', [
-      'bower_components/sass-bootstrap/js/affix.js',
-      'bower_components/sass-bootstrap/js/alert.js',
-      'bower_components/sass-bootstrap/js/dropdown.js',
-      'bower_components/sass-bootstrap/js/tooltip.js',
-      'bower_components/sass-bootstrap/js/modal.js',
-      'bower_components/sass-bootstrap/js/transition.js',
-      'bower_components/sass-bootstrap/js/button.js',
-      'bower_components/sass-bootstrap/js/popover.js',
-      'bower_components/sass-bootstrap/js/carousel.js',
-      'bower_components/sass-bootstrap/js/scrollspy.js',
-      'bower_components/sass-bootstrap/js/collapse.js',
-      'bower_components/sass-bootstrap/js/tab.js'
-    ]);
-  }
+  // this.indexFile = this.engine(this.indexFile, this);
+  // this.indexFile = this.appendScripts(this.indexFile, 'scripts/main.js', [
+  //   'scripts/main.js'
+  // ]);
 };
 
 AppGenerator.prototype.app = function app() {
-  this.mkdir('app');
-  this.mkdir('app/scripts');
-  this.mkdir('app/styles');
-  this.mkdir('app/images');
-  this.write('app/index.html', this.indexFile);
 
-  if (this.coffee) {
-    this.write('app/scripts/hello.coffee', this.mainCoffeeFile);
-  }
+  var deferred = q.defer(),
+      senchaCmd;
 
-  this.write('app/scripts/main.js', 'console.log(\'\\\'Allo \\\'Allo!\');');
+  senchaCmd = exec('sencha -sdk /usr/local/apache2/htdocs/localhost.com/sencha/sdk-2.3.1 generate app testApp ./app', {
+    cwd: '.'
+  });
+
+  senchaCmd.stdout.on('data', function(message) {
+    console.log(String(message || '').replace(/\n+$/, ''));
+  });
+
+  senchaCmd.on('exit', function(code) {
+    return code === 0 ? deferred.resolve(true) : deferred.reject(new Error('error'));
+  });
+
+  return deferred.promise;
+
+
+  // if (this.coffee) {
+  //   this.write('app/scripts/hello.coffee', this.mainCoffeeFile);
+  // }
+
+  // this.write('app/scripts/main.js', 'console.log(\'\\\'Allo \\\'Allo!\');');
 };

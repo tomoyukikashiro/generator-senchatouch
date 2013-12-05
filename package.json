@@ -1,29 +1,29 @@
 {
-  "name": "generator-webapp",
-  "version": "0.4.4",
-  "description": "Scaffold out a front-end web app",
+  "name": "generator-senchatouch",
+  "version": "0.1.0",
+  "description": "Scaffold out a senchatouch app",
   "keywords": [
     "yeoman-generator",
     "web",
     "app",
     "front-end",
-    "h5bp",
-    "modernizr"
+    "senchatouch"
   ],
-  "homepage": "https://github.com/yeoman/generator-webapp",
-  "bugs": "https://github.com/yeoman/generator-webapp/issues",
-  "author": "Chrome Developer Relations",
+  "homepage": "https://github.com/kashiro/generator-senchatouch",
+  "bugs": "https://github.com/kashiro/generator-senchatouch/issues",
+  "author": "Tomoyuki Kashiro",
   "main": "app/index.js",
   "repository": {
     "type": "git",
-    "url": "git://github.com/yeoman/generator-webapp.git"
+    "url": "git://github.com/kashiro/generator-senchatouch.git"
   },
   "scripts": {
     "test": "mocha --reporter spec"
   },
   "dependencies": {
     "yeoman-generator": "~0.14.0",
-    "cheerio": "~0.12.1"
+    "cheerio": "~0.12.1",
+    "q": "0.9.6"
   },
   "peerDependencies": {
     "yo": ">=1.0.0-rc.1.1",

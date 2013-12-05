@@ -333,9 +333,7 @@ module.exports = function (grunt) {
                     src: [
                         '*.{ico,png,txt}',
                         '.htaccess',
-                        'images/{,*/}*.webp',
-                        'styles/fonts/{,*/}*.*'<% if (compassBootstrap) { %>,
-                        'bower_components/sass-bootstrap/fonts/*.*'<% } %>
+                        'images/{,*/}*.webp'
                     ]
                 }]
             },
@@ -347,20 +345,6 @@ module.exports = function (grunt) {
                 src: '{,*/}*.css'
             }
         },
-
-        <% if (includeModernizr) { %>
-        // Generates a custom Modernizr build that includes only the tests you
-        // reference in your app
-        modernizr: {
-            devFile: '<%%= yeoman.app %>/bower_components/modernizr/modernizr.js',
-            outputFile: '<%%= yeoman.dist %>/bower_components/modernizr/modernizr.js',
-            files: [
-                '<%%= yeoman.dist %>/scripts/{,*/}*.js',
-                '<%%= yeoman.dist %>/styles/{,*/}*.css',
-                '!<%%= yeoman.dist %>/scripts/vendor/*'
-            ],
-            uglify: true
-        },<% } %>
 
         // Run some tasks in parallel to speed up build process
         concurrent: {
@@ -427,8 +411,7 @@ module.exports = function (grunt) {
         'autoprefixer',
         'concat',
         'cssmin',
-        'uglify',<% if (includeModernizr) { %>
-        'modernizr',<% } %>
+        'uglify',
         'copy:dist',
         'rev',
         'usemin'
