@@ -20,7 +20,7 @@ A Sencha Touch generator for Yoman that provides a function boilerplate Sencha T
 
 ### grunt serve
 
-The http server is launched. `http://localhost:9000` open automatically.
+The http server is launched. Bowser (`http://localhost:9000`) open automatically.
 
 `js`, `sass`, `images` are watched. so if you modify those resources the compile tasks are excuted and
 refresh you browser.
