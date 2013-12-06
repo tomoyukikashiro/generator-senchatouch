@@ -22,7 +22,7 @@ A Sencha Touch generator for Yoman that provides a function boilerplate Sencha T
 
 The http server is launched. `http://localhost:9000` open automatically.
 
-`js`, `sass`, `images` are watched. so if you modify those resources the build task is excuted and
+`js`, `sass`, `images` are watched. so if you modify those resources the compile tasks are excuted and
 refresh you browser.
 
 ### grunt test
