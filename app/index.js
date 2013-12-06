@@ -11,22 +11,12 @@ var AppGenerator = module.exports = function Appgenerator(args, options, config)
 
   // setup the test-framework property, Gruntfile template will need this
   this.testFramework = options['test-framework'] || 'mocha';
-  this.coffee = options.coffee;
 
   // for hooks to resolve on mocha by default
   options['test-framework'] = this.testFramework;
 
   // resolved to mocha by default (could be switched to jasmine for instance)
   this.hookFor('test-framework', { as: 'app' });
-
-  this.mainCoffeeFile = 'console.log "\'Allo from CoffeeScript!"';
-
-  this.on('end', function () {
-    this.installDependencies({
-      skipInstall: options['skip-install'],
-      skipMessage: options['skip-install-message']
-    });
-  });
 
   this.pkg = JSON.parse(this.readFileAsString(path.join(__dirname, '../package.json')));
 };
@@ -48,7 +38,7 @@ AppGenerator.prototype.askFor = function askFor() {
       'default': 'app'
     },
     {
-      name: 'sdkPath',
+      name: 'sdkpath',
       message: 'Where is your sencha touch sdk? Please input path to sdk.'
     }
   ];
@@ -94,20 +84,15 @@ AppGenerator.prototype.h5bp = function h5bp() {
   this.copy('htaccess', 'app/.htaccess');
 };
 
-AppGenerator.prototype.writeIndex = function writeIndex() {
-
-  // this.indexFile = this.engine(this.indexFile, this);
-  // this.indexFile = this.appendScripts(this.indexFile, 'scripts/main.js', [
-  //   'scripts/main.js'
-  // ]);
-};
-
 AppGenerator.prototype.app = function app() {
 
   var deferred = q.defer(),
+      self = this,
       senchaCmd;
 
-  senchaCmd = exec('sencha -sdk /usr/local/apache2/htdocs/localhost.com/sencha/sdk-2.3.1 generate app testApp ./app', {
+  this.mkdir('app');
+
+  senchaCmd = exec('sencha -sdk ' + this.sdkpath + ' generate app ' + this.appname + ' app/', {
     cwd: '.'
   });
 
@@ -116,15 +101,13 @@ AppGenerator.prototype.app = function app() {
   });
 
   senchaCmd.on('exit', function(code) {
+    self.log.ok('sencha command end.');
+    self.mkdir('app/resources/images');
+    self.mkdir('app/resources/fonts');
+    self.installDependencies();
     return code === 0 ? deferred.resolve(true) : deferred.reject(new Error('error'));
   });
 
   return deferred.promise;
 
-
-  // if (this.coffee) {
-  //   this.write('app/scripts/hello.coffee', this.mainCoffeeFile);
-  // }
-
-  // this.write('app/scripts/main.js', 'console.log(\'\\\'Allo \\\'Allo!\');');
 };

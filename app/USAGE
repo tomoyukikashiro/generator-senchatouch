@@ -1,11 +1,8 @@
 Description:
-    Creates a new basic front-end web application.
-
-Options:
-    Twitter Bootstrap: Include Twitter Bootstrap for Sass
+    Creates a new sencha touch application
 
 Example:
-    yo webapp [--coffee]
+    yo senchatouch
 
     This will create:
         Gruntfile.js: Configuration for the task runner.
