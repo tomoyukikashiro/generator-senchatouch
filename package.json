@@ -1,6 +1,6 @@
 {
   "name": "generator-senchatouch",
-  "version": "0.1.0",
+  "version": "0.0.1",
   "description": "Scaffold out a senchatouch app",
   "keywords": [
     "yeoman-generator",
@@ -17,9 +17,7 @@
     "type": "git",
     "url": "git://github.com/kashiro/generator-senchatouch.git"
   },
-  "scripts": {
-    "test": "mocha --reporter spec"
-  },
+  "scripts": {},
   "dependencies": {
     "yeoman-generator": "~0.14.0",
     "cheerio": "~0.12.1",
