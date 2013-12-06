@@ -10,7 +10,7 @@ A Sencha Touch generator for Yoman that provides a function boilerplate Sencha T
 
 ### Install
 
-    npm install -g generator-sencha
+    npm install -g generator-senchatouch
 
 ### Generate
 
