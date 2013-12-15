@@ -2,7 +2,7 @@
 
 Maintainer: [Tomoyuki Kashiro](https://github.com/kashiro)
 
-A Sencha Touch generator for Yoman that provides a function boilerplate Sencha Touch app
+A Sencha Touch generator for [Yeoman](http://yeoman.io/) that provides a function boilerplate Sencha Touch app
 
 * required * : [Sencha command](http://www.sencha.com/products/sencha-cmd/download)
 
@@ -10,7 +10,7 @@ A Sencha Touch generator for Yoman that provides a function boilerplate Sencha T
 
 ### Install
 
-    npm install -g generator-sencha
+    npm install -g generator-senchatouch
 
 ### Generate
 
