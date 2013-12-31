@@ -6,6 +6,8 @@
 // 'test/spec/{,*/}*.js'
 // use this if you want to recursively match all subfolders:
 // 'test/spec/**/*.js'
+//
+var exec = require('child_process').exec;
 
 module.exports = function (grunt) {
 
