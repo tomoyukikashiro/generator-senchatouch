@@ -15,7 +15,7 @@ A Sencha Touch generator for [Yeoman](http://yeoman.io/) that provides a functio
 ### Generate
 
     yo senchatouch
-    
+
 ## Grunt Task
 
 ### grunt serve
@@ -31,16 +31,24 @@ excute test.
 
 ### grunt (default)
 
-comming soon. (build task does not modify for sencha touch)
+execute following task.
+
+* jshint
+* test
+* serve
 
 ### grunt build
 
-comming soon. (build task does not modify for sencha touch)
+* `grunt build:testing`
 
+  execute `sencha app build testing`
+
+* `grunt build:production`
+
+  execute `sencha app build production` and some grunt tasks.
 
 ### TODO
 
 - [x] create test
-- [x] modify grunt task ( default and build )
 
 

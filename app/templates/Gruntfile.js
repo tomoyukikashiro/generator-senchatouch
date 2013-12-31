@@ -22,7 +22,8 @@ module.exports = function (grunt) {
         yeoman: {
             // Configurable paths
             app: 'app',
-            dist: 'dist'
+            testing: 'build/testing/<%= _.slugify(appname) %>',
+            production: 'build/production/<%= _.slugify(appname) %>'
         },
 
         // Watches files for changes and runs tasks based on the changed files
@@ -73,6 +74,24 @@ module.exports = function (grunt) {
                     ]
                 }
             },
+            testing: {
+                options: {
+                    open: true,
+                    hostname: 'localhost',
+                    base: [
+                        '<%%= yeoman.testing %>'
+                    ]
+                }
+            },
+            production: {
+                options: {
+                    open: true,
+                    hostname: 'localhost',
+                    base: [
+                        '<%%= yeoman.production %>'
+                    ]
+                }
+            },
             test: {
                 options: {
                     port: 9001,
@@ -82,28 +101,11 @@ module.exports = function (grunt) {
                         '<%%= yeoman.app %>'
                     ]
                 }
-            },
-            dist: {
-                options: {
-                    open: true,
-                    base: '<%%= yeoman.dist %>',
-                    livereload: false
-                }
             }
         },
 
         // Empties folders to start fresh
         clean: {
-            dist: {
-                files: [{
-                    dot: true,
-                    src: [
-                        '.tmp',
-                        '<%%= yeoman.dist %>/*',
-                        '!<%%= yeoman.dist %>/.git*'
-                    ]
-                }]
-            },
             server: '.tmp'
         },
 
@@ -142,45 +144,23 @@ module.exports = function (grunt) {
 
         // Compiles Sass to CSS and generates necessary files if requested
         compass: {
-            options: {
-                sassDir: '<%%= yeoman.app %>/resources/sass',
-                cssDir: '.tmp/resources/css',
-                generatedImagesDir: '.tmp/resources/images/generated',
-                imagesDir: '<%%= yeoman.app %>/resources/images',
-                javascriptsDir: '<%%= yeoman.app %>/app',
-                fontsDir: '<%%= yeoman.app %>/resources/sass/stylesheets/fonts',
-                //importPath: '<%%= yeoman.app %>/bower_components',
-                httpImagesPath: '/resources/images',
-                httpGeneratedImagesPath: '/resources/images/generated',
-                httpFontsPath: '/resources/fonts',
-                load: '<%%= yeoman.app %>/touch/resources/themes',
-                relativeAssets: false,
-                assetCacheBuster: false
-            },
-            dist: {
-                options: {
-                    generatedImagesDir: '<%%= yeoman.dist %>/resources/images/generated'
-                }
-            },
             server: {
                 options: {
+                    sassDir: '<%%= yeoman.app %>/resources/sass',
+                    cssDir: '.tmp/resources/css',
+                    generatedImagesDir: '.tmp/resources/images/generated',
+                    imagesDir: '<%%= yeoman.app %>/resources/images',
+                    javascriptsDir: '<%%= yeoman.app %>/app',
+                    fontsDir: '<%%= yeoman.app %>/resources/sass/stylesheets/fonts',
+                    //importPath: '<%%= yeoman.app %>/bower_components',
+                    httpImagesPath: '/resources/images',
+                    httpGeneratedImagesPath: '/resources/images/generated',
+                    httpFontsPath: '/resources/fonts',
+                    load: '<%%= yeoman.app %>/touch/resources/themes',
+                    relativeAssets: false,
+                    assetCacheBuster: false,
                     debugInfo: true
                 }
-            }
-        },
-
-        // Add vendor prefixed styles
-        autoprefixer: {
-            options: {
-                browsers: ['last 1 version']
-            },
-            dist: {
-                files: [{
-                    expand: true,
-                    cwd: '.tmp/resources/css/',
-                    src: '{,**/}*.css',
-                    dest: '.tmp/resources/css/'
-                }]
             }
         },
 
@@ -190,40 +170,6 @@ module.exports = function (grunt) {
                 html: '<%%= yeoman.app %>/index.html',
                 ignorePath: '<%%= yeoman.app %>/'
             }
-        },
-
-        // Renames files for browser caching purposes
-        rev: {
-            dist: {
-                files: {
-                    src: [
-                        '<%%= yeoman.dist %>/app.js',
-                        '<%%= yeoman.dist %>/app/{,**/}*.js',
-                        '<%%= yeoman.dist %>/resources/css/{,**/}*.css',
-                        '<%%= yeoman.dist %>/resources/images/{,**/}*.{gif,jpeg,jpg,png,webp}',
-                        '<%%= yeoman.dist %>/resources/fonts/{,**/}*.*'
-                    ]
-                }
-            }
-        },
-
-        // Reads HTML for usemin blocks to enable smart builds that automatically
-        // concat, minify and revision files. Creates configurations in memory so
-        // additional tasks can operate on them
-        useminPrepare: {
-            options: {
-                dest: '<%%= yeoman.dist %>'
-            },
-            html: '<%%= yeoman.app %>/index.html'
-        },
-
-        // Performs rewrites based on rev and the useminPrepare configuration
-        usemin: {
-            options: {
-                assetsDirs: ['<%%= yeoman.dist %>']
-            },
-            html: ['<%%= yeoman.dist %>/{,*/}*.html'],
-            css: ['<%%= yeoman.dist %>/resources/css/{,**/}*.css']
         },
 
         // The following *-min tasks produce minified files in the dist folder
@@ -244,26 +190,6 @@ module.exports = function (grunt) {
                     cwd: '<%%= yeoman.app %>/resources/images',
                     src: '{,**/}*.svg',
                     dest: '<%%= yeoman.dist %>/resources/images'
-                }]
-            }
-        },
-        htmlmin: {
-            dist: {
-                options: {
-                    // removeCommentsFromCDATA: true,
-                    // collapseWhitespace: true,
-                    // collapseBooleanAttributes: true,
-                    // removeAttributeQuotes: true,
-                    // removeRedundantAttributes: true,
-                    // useShortDoctype: true,
-                    // removeEmptyAttributes: true,
-                    // removeOptionalTags: true
-                },
-                files: [{
-                    expand: true,
-                    cwd: '<%%= yeoman.app %>',
-                    src: '*.html',
-                    dest: '<%%= yeoman.dist %>'
                 }]
             }
         },
@@ -296,19 +222,6 @@ module.exports = function (grunt) {
 
         // Copies remaining files to places other tasks can use
         copy: {
-            dist: {
-                files: [{
-                    expand: true,
-                    dot: true,
-                    cwd: '<%%= yeoman.app %>',
-                    dest: '<%%= yeoman.dist %>',
-                    src: [
-                        '*.{ico,png,txt}',
-                        '.htaccess',
-                        'resources/images/{,**/}*.webp'
-                    ]
-                }]
-            },
             styles: {
                 expand: true,
                 dot: true,
@@ -326,27 +239,40 @@ module.exports = function (grunt) {
             ],
             test: [
                 'copy:styles'
-            ],
-            dist: [
-                'compass',
-                'copy:styles',
-                'imagemin',
-                'svgmin',
-                'htmlmin'
             ]
         }
     });
 
+    grunt.registerTask('senchaBuild', function(target) {
+        var done = this.async(),
+            senchaCmd;
+
+        senchaCmd = exec('sencha app build ' + target, {
+            cwd: 'app'
+        });
+
+        senchaCmd.stderr.on('data', function(message) {
+            grunt.log.write(message);
+        });
+
+        senchaCmd.stdout.on('data', function(message) {
+            grunt.log.write(message);
+        });
+
+        senchaCmd.on('exit', function(code) {
+            grunt.log.write('sencha app build end.');
+            return code === 0 ? done() : done(false);
+        });
+    });
 
     grunt.registerTask('serve', function (target) {
         if (target === 'dist') {
-            return grunt.task.run(['build', 'connect:dist:keepalive']);
+            return grunt.task.run(['build:' + target, 'connect:' + target + ':keepalive']);
         }
 
         grunt.task.run([
             'clean:server',
             'concurrent:server',
-            'autoprefixer',
             'connect:livereload',
             'watch'
         ]);
@@ -361,8 +287,7 @@ module.exports = function (grunt) {
         if (target !== 'watch') {
             grunt.task.run([
                 'clean:server',
-                'concurrent:test',
-                'autoprefixer',
+                'concurrent:test'
             ]);
         }
 
@@ -373,22 +298,23 @@ module.exports = function (grunt) {
         ]);
     });
 
-    grunt.registerTask('build', [
-        'clean:dist',
-        'useminPrepare',
-        'concurrent:dist',
-        'autoprefixer',
-        'concat',
-        'cssmin',
-        'uglify',
-        'copy:dist',
-        'rev',
-        'usemin'
-    ]);
+    grunt.registerTask('build', function(target) {
+        if(target === 'testing') {
+            grunt.task.run([
+                'senchaBuild:testing'
+            ]);
+        }else if(target === 'production') {
+            grunt.task.run([
+                'senchaBuild:production',
+                'imagemin:production',
+                'svgmin:production',
+            ]);
+        }
+    });
 
     grunt.registerTask('default', [
         'newer:jshint',
         'test',
-        'build'
+        'serve'
     ]);
 };
