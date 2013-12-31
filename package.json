@@ -1,6 +1,6 @@
 {
   "name": "generator-senchatouch",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Scaffold out a senchatouch app",
   "keywords": [
     "yeoman-generator",
