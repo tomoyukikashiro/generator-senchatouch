@@ -25,7 +25,8 @@ module.exports = function (grunt) {
             // Configurable paths
             app: 'app',
             testing: 'build/testing/<%= _.slugify(appname) %>',
-            production: 'build/production/<%= _.slugify(appname) %>'
+            production: 'build/production/<%= _.slugify(appname) %>',
+            bowerDist: 'bower-dist'
         },
 
         // Watches files for changes and runs tasks based on the changed files
@@ -230,6 +231,15 @@ module.exports = function (grunt) {
                 cwd: '<%%= yeoman.app %>/resources/css',
                 dest: '.tmp/resources/css/',
                 src: '{,**/}*.css'
+            },
+            bower: {
+                expand: true,
+                dot: false,
+                cwd: '<%= yeoman.app %>',
+                dest: '<%= yeoman.bowerDist %>',
+                src: [
+                    'ux/**/*.js'
+                ]
             }
         },
 
@@ -313,6 +323,10 @@ module.exports = function (grunt) {
             ]);
         }
     });
+
+    grunt.registerTask('build-bower', [
+        'copy:bower'
+    ]);
 
     grunt.registerTask('default', [
         'newer:jshint',
