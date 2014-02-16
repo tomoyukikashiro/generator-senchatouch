@@ -46,6 +46,11 @@ execute following task.
 * `grunt build:production`
 
   execute `sencha app build production` and some grunt tasks.
+ 
+### grunt build-bower
+
+Copy custom components which are under the `app/ux` folder to `bower-dist`.
+It is useful to publish your costom component to bower.
 
 ### TODO
 
